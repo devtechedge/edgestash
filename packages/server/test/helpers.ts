@@ -35,3 +35,45 @@ export async function start(extra: Parameters<typeof createEdgestash>[0] = {}): 
     },
   };
 }
+
+import { spawn, spawnSync, type ChildProcess } from "node:child_process";
+import { connect, createServer as netServer } from "node:net";
+
+export const hasRedisServer = spawnSync("redis-server", ["--version"]).status === 0;
+
+async function freePort(): Promise<number> {
+  return new Promise((resolve) => {
+    const srv = netServer();
+    srv.listen(0, "127.0.0.1", () => {
+      const p = (srv.address() as AddressInfo).port;
+      srv.close(() => resolve(p));
+    });
+  });
+}
+
+/** Spawn a throwaway redis-server (no persistence) for differential tests. */
+export async function startRedisServer(): Promise<{ url: string; stop(): void }> {
+  const port = await freePort();
+  const proc: ChildProcess = spawn("redis-server", ["--port", String(port), "--save", "", "--appendonly", "no", "--bind", "127.0.0.1"], { stdio: "ignore" });
+  const url = `redis://127.0.0.1:${port}`;
+  for (let i = 0; i < 100; i++) {
+    const ok = await new Promise<boolean>((resolve) => {
+      const sock = connect(port, "127.0.0.1");
+      sock.once("connect", () => { sock.end(); resolve(true); });
+      sock.once("error", () => resolve(false));
+    });
+    if (ok) break;
+    await new Promise((r) => setTimeout(r, 50));
+  }
+  return { url, stop: () => proc.kill("SIGKILL") };
+}
+
+/** Backends to run SDK suites against: always embedded, plus proxy when redis-server exists. */
+export const backends: Array<"embedded" | "proxy"> = hasRedisServer ? ["embedded", "proxy"] : ["embedded"];
+
+export async function startWithBackend(kind: "embedded" | "proxy"): Promise<Running & { redisStop?: () => void }> {
+  if (kind === "embedded") return start();
+  const rs = await startRedisServer();
+  const s = await start({ redisBackend: rs.url });
+  return { ...s, redisStop: rs.stop, async stop() { await s.stop(); rs.stop(); } };
+}
