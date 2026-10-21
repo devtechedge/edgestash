@@ -1,0 +1,32 @@
+{
+  "name": "edgestash",
+  "version": "0.0.0",
+  "description": "Self-hostable Vercel Blob and Upstash Redis REST compatible server",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "edgestash": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "dev": "tsx watch src/cli.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@upstash/ratelimit": "^2.2.0",
+    "@upstash/redis": "^1.39.0",
+    "@vercel/blob": "^2.8.2",
+    "tsx": "^4.23.15",
+    "vitest": "^5.0.5"
+  },
+  "dependencies": {
+    "fengari": "^0.1.5"
+  }
+}
