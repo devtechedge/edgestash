@@ -20,3 +20,18 @@ jobs:
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t edgestash:ci .
+      - name: Smoke test
+        run: |
+          docker run -d --name es -p 3333:3333 edgestash:ci
+          for i in $(seq 1 30); do curl -sf localhost:3333/healthz && break; sleep 1; done
+          curl -sf -X POST localhost:3333/redis -H 'authorization: Bearer edgestash-dev-token' -d '["SET","ci","ok"]'
+          curl -sf -X PUT 'localhost:3333/api/blob/?pathname=ci.txt' -H 'authorization: Bearer vercel_blob_rw_local_edgestashdevsecret' --data-binary hello
+          test "$(curl -sf localhost:3333/s/local/ci.txt)" = "hello"
+          docker logs es
