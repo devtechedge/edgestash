@@ -1,0 +1,16 @@
+{
+  "name": "edgestash-examples",
+  "private": true,
+  "type": "module",
+  "description": "Unmodified official SDKs pointed at edgestash through environment variables only.",
+  "scripts": {
+    "blob": "node --env-file=.env.example blob.mjs",
+    "redis": "node --env-file=.env.example redis.mjs",
+    "ratelimit": "node --env-file=.env.example ratelimit.mjs"
+  },
+  "dependencies": {
+    "@upstash/ratelimit": "^2.2.0",
+    "@upstash/redis": "^1.39.0",
+    "@vercel/blob": "^2.8.2"
+  }
+}
