@@ -2,6 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "cd ../.. && pnpm turbo run build --filter=web...",
+  "buildCommand": "cd ../.. && pnpm turbo run build --filter=web... --force",
   "env": { "EDGESTASH_MAX_BLOB_BYTES": "1048576" }
 }
