@@ -31,8 +31,9 @@ export default function Dashboard() {
   const refresh = useCallback(async () => {
     try {
       setError("");
-      const [s, k, b] = await Promise.all([api("stats"), api(`keys?match=${encodeURIComponent(match)}`), api("blobs")]);
-      setStats(s); setKeys(k.keys); setBlobs(b.blobs);
+      // One request gives a consistent view of a single instance (serverless demo state is per instance).
+      const o = await api(`overview?seed=1&match=${encodeURIComponent(match)}`);
+      setStats(o.stats); setKeys(o.keys); setBlobs(o.blobs);
     } catch (e) { setError(String(e)); }
   }, [api, match]);
 
