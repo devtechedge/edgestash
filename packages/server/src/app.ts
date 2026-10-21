@@ -98,10 +98,11 @@ export async function createEdgestash(partial: Partial<EdgestashConfig> = {}, de
     if (path === "overview") {
       // One consistent snapshot for dashboards; ?seed=1 fills an empty instance with sample data.
       if (q.get("seed") === "1" && engine && engine.db.keys().length === 0) await seed();
+      const inner = { authorization: `Bearer ${config.adminToken}` };
       const [stats, keys, blobs] = await Promise.all([
-        admin(new Request(new URL("/api/admin/stats", req.url), { headers: req.headers }), "stats").then((r) => r.json()),
-        admin(new Request(new URL(`/api/admin/keys?match=${encodeURIComponent(q.get("match") ?? "*")}`, req.url), { headers: req.headers }), "keys").then((r) => r.json()),
-        admin(new Request(new URL("/api/admin/blobs", req.url), { headers: req.headers }), "blobs").then((r) => r.json()),
+        admin(new Request(new URL("/api/admin/stats", req.url), { headers: inner }), "stats").then((r) => r.json()),
+        admin(new Request(new URL(`/api/admin/keys?match=${encodeURIComponent(q.get("match") ?? "*")}`, req.url), { headers: inner }), "keys").then((r) => r.json()),
+        admin(new Request(new URL("/api/admin/blobs", req.url), { headers: inner }), "blobs").then((r) => r.json()),
       ]);
       return json({ stats, keys: keys.keys ?? [], blobs: blobs.blobs ?? [] });
     }
