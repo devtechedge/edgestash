@@ -16,7 +16,9 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
-    "dev": "tsx watch src/cli.ts"
+    "dev": "tsx watch src/cli.ts",
+    "conformance": "tsx conformance/report.ts",
+    "evidence": "bash ../../scripts/collect-evidence.sh"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",

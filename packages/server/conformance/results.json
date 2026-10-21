@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-10-21T16:25:58.942Z",
+  "redisServer": "8.0.2",
+  "total": 2381,
+  "pass": 2381,
+  "rate": 100,
+  "byGroup": {
+    "strings": {
+      "pass": 75,
+      "total": 75
+    },
+    "keys-and-ttl": {
+      "pass": 59,
+      "total": 59
+    },
+    "hashes": {
+      "pass": 36,
+      "total": 36
+    },
+    "lists": {
+      "pass": 61,
+      "total": 61
+    },
+    "sets": {
+      "pass": 41,
+      "total": 41
+    },
+    "sorted-sets": {
+      "pass": 63,
+      "total": 63
+    },
+    "scan": {
+      "pass": 7,
+      "total": 7
+    },
+    "scripting": {
+      "pass": 39,
+      "total": 39
+    },
+    "fuzz": {
+      "pass": 2000,
+      "total": 2000
+    }
+  },
+  "failures": []
+}
