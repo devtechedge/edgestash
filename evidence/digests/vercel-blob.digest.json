@@ -1,0 +1,302 @@
+{
+  "schema": "edgestash.evidence-digest/v1",
+  "source": "evidence/raw/vercel-blob.json.gz",
+  "raw_sha256": "84bff82ed3705a731fc24d47592280362b66903087868ebe3a3823b00da4f79e",
+  "gzip_sha256": "29fef81fd6e5bed3bd69fc5d3892ae1a9d9c33d295c26e632b5dfccdaef27657",
+  "rea": {
+    "evidence_id": "ev_97ae0c45df88de92719712e3832c9c194cbd25fa05289b6cff72722f5b95ee0c",
+    "operation": "analyze_javascript_application",
+    "provider": {
+      "id": "rea-javascript-application",
+      "name": "REA JavaScript application analyzer",
+      "version": "1"
+    },
+    "confidence": "derived",
+    "authority": "shipped-artifact"
+  },
+  "subject": {
+    "name": "blob",
+    "sha256": "0c5a6f05e602b74fc40fae221c3c65de1960dc54640362d717128991228db1ff",
+    "format": "directory"
+  },
+  "statistics": {
+    "relevant_files": 22,
+    "nested_asar_containers": 0,
+    "text_bytes_read": 899900,
+    "invalid_utf8_files": 0,
+    "parsed_javascript_files": 15,
+    "skipped_javascript_files": 0,
+    "visited_ast_nodes": 31273,
+    "findings": 632,
+    "modules": 0,
+    "parse_failures": 0
+  },
+  "semantic_counts": {
+    "nodes": 18453,
+    "relations": 16388,
+    "unknowns": 5184
+  },
+  "limitations": [
+    "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+    "Graph coverage is incomplete; unavailable facts remain explicit and must not be read as absence.",
+    "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+    "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+    "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+    "Webpack/Rspack factories were recovered from AST literals; REA did not invoke push handlers or bundle bootstrap code."
+  ],
+  "config_sources": [
+    {
+      "key": "BLOB_WEBHOOK_PUBLIC_KEY",
+      "at": "dist/client.js:317"
+    },
+    {
+      "key": "DEBUG",
+      "at": "dist/chunk-XKVPKJPO.js:366"
+    },
+    {
+      "key": "environment",
+      "at": "dist/chunk-XKVPKJPO.js:113"
+    },
+    {
+      "key": "NEXT_PUBLIC_DEBUG",
+      "at": "dist/chunk-XKVPKJPO.js:366"
+    },
+    {
+      "key": "NEXT_PUBLIC_VERCEL_BLOB_API_URL",
+      "at": "dist/chunk-MITTIJDE.cjs:259"
+    },
+    {
+      "key": "NEXT_PUBLIC_VERCEL_BLOB_API_VERSION_OVERRIDE",
+      "at": "dist/chunk-MITTIJDE.cjs:640"
+    },
+    {
+      "key": "NEXT_PUBLIC_VERCEL_BLOB_PROXY_THROUGH_ALTERNATIVE_API",
+      "at": "dist/chunk-XKVPKJPO.js:858"
+    },
+    {
+      "key": "VERCEL",
+      "at": "dist/client.cjs:506"
+    },
+    {
+      "key": "VERCEL_BLOB_API_URL",
+      "at": "dist/chunk-MITTIJDE.cjs:259"
+    },
+    {
+      "key": "VERCEL_BLOB_API_VERSION_OVERRIDE",
+      "at": "dist/chunk-MITTIJDE.cjs:640"
+    },
+    {
+      "key": "VERCEL_BLOB_CALLBACK_URL",
+      "at": "dist/client.js:503"
+    },
+    {
+      "key": "VERCEL_BLOB_PROXY_THROUGH_ALTERNATIVE_API",
+      "at": "dist/chunk-XKVPKJPO.js:855"
+    },
+    {
+      "key": "VERCEL_BLOB_RETRIES",
+      "at": "dist/chunk-XKVPKJPO.js:647"
+    },
+    {
+      "key": "VERCEL_BLOB_USE_X_CONTENT_LENGTH",
+      "at": "dist/chunk-XKVPKJPO.js:866"
+    },
+    {
+      "key": "VERCEL_BRANCH_URL",
+      "at": "dist/client.cjs:514"
+    },
+    {
+      "key": "VERCEL_ENV",
+      "at": "dist/client.js:512"
+    },
+    {
+      "key": "VERCEL_PROJECT_PRODUCTION_URL",
+      "at": "dist/client.js:521"
+    },
+    {
+      "key": "VERCEL_URL",
+      "at": "dist/client.js:517"
+    }
+  ],
+  "interesting_literals": [
+    "//",
+    "4096",
+    "8192",
+    "blob.generate-client-token",
+    "blob.generate-presigned-url",
+    "blob.upload-completed",
+    "https://vercel.com/api/blob",
+    "presignUrl",
+    "vercel-blob-add-random-suffix",
+    "vercel-blob-allow-overwrite",
+    "vercel-blob-allowed-content-types",
+    "vercel-blob-cache-control-max-age",
+    "vercel-blob-callback-token-payload",
+    "vercel-blob-callback-url",
+    "vercel-blob-if-match",
+    "vercel-blob-maximum-size-in-bytes",
+    "vercel-blob-valid-until",
+    "x-add-random-suffix",
+    "x-allow-overwrite",
+    "x-cache-control-max-age",
+    "x-content-type",
+    "x-if-match",
+    "x-vercel-blob-access",
+    "x-vercel-signature"
+  ],
+  "interesting_property_slots": [
+    "x-add-random-suffix",
+    "x-allow-overwrite",
+    "x-cache-control-max-age",
+    "x-content-type",
+    "x-if-match",
+    "x-proxy-through-alternative-api",
+    "x-vercel-blob-access"
+  ],
+  "functions": [
+    "BlobAccessError",
+    "BlobClientTokenExpiredError",
+    "BlobContentTypeNotAllowedError",
+    "BlobError",
+    "BlobFileTooLargeError",
+    "BlobNotFoundError",
+    "BlobOidcEnvironmentNotAllowedError",
+    "BlobPathnameMismatchError",
+    "BlobPreconditionFailedError",
+    "BlobRequestAbortedError",
+    "BlobServiceNotAvailable",
+    "BlobServiceRateLimited",
+    "BlobStoreNotFoundError",
+    "BlobStoreSuspendedError",
+    "BlobUnknownError",
+    "_interopRequireDefault",
+    "_interopRequireWildcard",
+    "addOptimizeImageParams",
+    "addPresignedParams",
+    "assertAllowedContentTypesSubset",
+    "assertIssueSignedTokenValidUntilOption",
+    "assertNumberSubset",
+    "base64UrlDecodeDelegationSegment",
+    "base64UrlDecodeToString",
+    "blobFetch",
+    "blobRequest",
+    "blobXhr",
+    "buildPresignCanonicalQueryEntries",
+    "buildPresignedDeleteUrl",
+    "buildPresignedGetUrl",
+    "buildPresignedPutUrl",
+    "bytes",
+    "cancel",
+    "canonicalString",
+    "compareUtf8",
+    "complete",
+    "completeMultipartUpload",
+    "computeBodyLength",
+    "constructBlobUrl",
+    "constructor",
+    "contentTypeAllowedByList",
+    "copy",
+    "createBlobServiceRateLimited",
+    "createChunkTransformStream",
+    "createCompleteMultipartUploadMethod",
+    "createCreateMultipartUploadMethod",
+    "createCreateMultipartUploaderMethod",
+    "createFolder",
+    "createHmac",
+    "createMultipartUpload",
+    "createPublicKey",
+    "createPutExtraChecks",
+    "createPutHeaders",
+    "createPutMethod",
+    "createPutOptions",
+    "createUploadPartMethod",
+    "debug",
+    "dedupeOps",
+    "del",
+    "duplex",
+    "extraChecks",
+    "extractPathnameFromUrl",
+    "flush",
+    "generateClientTokenFromReadWriteToken",
+    "get",
+    "getApiUrl",
+    "getApiUrlOverride",
+    "getApiVersion",
+    "getBlobError",
+    "getCallbackUrl",
+    "getDownloadUrl",
+    "getPathFromRequestUrl",
+    "getPayloadFromClientToken",
+    "getPresignedUrlPayload",
+    "getProxyThroughAlternativeApiHeaderFromEnv",
+    "getReadWriteBlobTokenFromOptionsOrEnv",
+    "getRetries",
+    "getToken",
+    "getVercelOidcToken",
+    "handleAbort",
+    "handleUpload",
+    "handleUploadPresigned",
+    "head",
+    "hexToArrayByte",
+    "hmacSha256Base64Url",
+    "importKey",
+    "isAbsoluteUrl",
+    "isAllowedBlobUrl",
+    "isError",
+    "isNetworkError",
+    "isNodeJsBuffer",
+    "isNodeJsReadableStream",
+    "isPlainObject",
+    "isPlausibleAbsoluteUrl",
+    "isReadableStream",
+    "isStream",
+    "isUrl",
+    "issueSignedToken",
+    "list",
+    "mapBlobResult",
+    "normalizeStoreId",
+    "parseStoreIdFromDelegationToken",
+    "parseStoreIdFromPresignedUrl",
+    "parseStoreIdFromReadWriteToken",
+    "presign",
+    "presignUrl",
+    "publicKeyDerFromPem",
+    "put",
+    "putFromUrl",
+    "putImage",
+    "read",
+    "readEnv",
+    "rename",
+    "requestApi",
+    "resolveBlobAuth",
+    "resolvePresignUrlValidUntilMs",
+    "retrieveClientToken",
+    "retrievePresignedUrlPayload",
+    "sendPart",
+    "sendParts",
+    "shouldUseXContentLength",
+    "signPayload",
+    "sortedContentTypesCsv",
+    "start",
+    "stringToUint8Array",
+    "timingSafeEqual",
+    "toAbsoluteUrl",
+    "toBase64Url",
+    "toPutBlobResult",
+    "toReadableStream",
+    "toWeb",
+    "transform",
+    "tryDecodePayload",
+    "uint8ToBase64",
+    "uncontrolledMultipartUpload",
+    "uploadAllParts",
+    "uploadPart",
+    "validateOptimizeImageOptions",
+    "validateOptimizeImageSourceContentType",
+    "validatePresignUrlOnUploadCompletedWire",
+    "validateUrlOnlyPresignUploadOptions",
+    "verify",
+    "verifyCallbackSignature",
+    "verifyCallbackSignaturePresigned"
+  ]
+}
