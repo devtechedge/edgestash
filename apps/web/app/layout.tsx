@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
+
+const boot = `try{var t=localStorage.getItem("edgestash-theme")||"dark";document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){}`;
 
 export const metadata: Metadata = {
   title: "edgestash: self-hosted Vercel Blob and Upstash Redis API",
@@ -10,7 +13,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: boot }} /></head>
       <body>
         <header className="top">
           <div className="wrap">
@@ -19,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/demo">Live demo</Link>
               <Link href="/dashboard">Dashboard</Link>
               <a href="https://github.com/devtechedge/edgestash">GitHub</a>
+              <ThemeToggle />
             </nav>
           </div>
         </header>
