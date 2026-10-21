@@ -6,7 +6,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json tsconfig.base.js
 COPY packages/server/package.json packages/server/
 RUN pnpm install --frozen-lockfile --filter edgestash...
 COPY packages/server packages/server
-RUN pnpm --filter edgestash build && pnpm --filter edgestash deploy --prod --legacy /out
+RUN pnpm --filter edgestash build && pnpm --filter edgestash deploy --prod /out
 
 FROM node:22-alpine
 ENV NODE_ENV=production EDGESTASH_PORT=3333 EDGESTASH_DATA_DIR=/data
