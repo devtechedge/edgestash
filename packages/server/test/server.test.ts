@@ -62,3 +62,17 @@ describe("HTTP surface", () => {
     expect(r.headers.get("access-control-allow-origin")).toBe("*");
   });
 });
+
+describe("admin overview", () => {
+  it("seeds an empty instance and returns stats, keys and blobs in one response", async () => {
+    const fresh = await start();
+    try {
+      const o = await (await fetch(`${fresh.url}/api/admin/overview?seed=1`, { headers: { authorization: "Bearer admin" } })).json();
+      expect(o.stats.redis.keys).toBeGreaterThanOrEqual(8);
+      expect(o.keys.map((k: { key: string }) => k.key)).toContain("leaderboard");
+      expect(o.blobs.map((b: { pathname: string }) => b.pathname)).toEqual(["samples/config.json", "samples/readme.txt"]);
+    } finally {
+      await fresh.stop();
+    }
+  });
+});

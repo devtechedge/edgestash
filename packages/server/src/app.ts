@@ -91,6 +91,20 @@ export async function createEdgestash(partial: Partial<EdgestashConfig> = {}, de
   async function admin(req: Request, path: string): Promise<Response> {
     if (!adminOk(req)) return json({ error: "Unauthorized" }, 401);
     const q = new URL(req.url).searchParams;
+    if (path === "seed" && req.method === "POST") {
+      await seed();
+      return json({ ok: true });
+    }
+    if (path === "overview") {
+      // One consistent snapshot for dashboards; ?seed=1 fills an empty instance with sample data.
+      if (q.get("seed") === "1" && engine && engine.db.keys().length === 0) await seed();
+      const [stats, keys, blobs] = await Promise.all([
+        admin(new Request(new URL("/api/admin/stats", req.url), { headers: req.headers }), "stats").then((r) => r.json()),
+        admin(new Request(new URL(`/api/admin/keys?match=${encodeURIComponent(q.get("match") ?? "*")}`, req.url), { headers: req.headers }), "keys").then((r) => r.json()),
+        admin(new Request(new URL("/api/admin/blobs", req.url), { headers: req.headers }), "blobs").then((r) => r.json()),
+      ]);
+      return json({ stats, keys: keys.keys ?? [], blobs: blobs.blobs ?? [] });
+    }
     if (path === "stats") {
       return json({
         version: VERSION,
@@ -119,6 +133,27 @@ export async function createEdgestash(partial: Partial<EdgestashConfig> = {}, de
       return json({ storeId, blobs: storage.list(storeId).filter((m) => m.pathname.startsWith(prefix)).map((m) => ({ ...m, url: blob.blobUrl(m.storeId, m.pathname) })) });
     }
     return json({ error: "not found" }, 404);
+  }
+
+  /** Sample data for demos: a few keys of every type and two blobs. */
+  async function seed(): Promise<void> {
+    const cmds: string[][] = [
+      ["SET", "greeting", "hello from edgestash"],
+      ["SET", "session:abc", JSON.stringify({ user: "ada", plan: "pro" }), "EX", "3600"],
+      ["INCRBY", "stats:visits", "42"],
+      ["HSET", "user:1", "name", "Ada", "email", "ada@example.com", "plan", "pro"],
+      ["RPUSH", "queue:emails", "welcome", "digest", "reminder"],
+      ["SADD", "tags:post:1", "redis", "blob", "self-hosted"],
+      ["ZADD", "leaderboard", "120", "ada", "95", "linus", "87", "grace"],
+      ["SET", "ratelimit:demo:1", "3", "PX", "60000"],
+    ];
+    await backend.run(cmds, false);
+    const storeId = config.blobTokens[0]?.split("_")[3] ?? "";
+    const tok = config.blobTokens[0] ?? "";
+    for (const [p, body, type] of [["samples/readme.txt", "edgestash sample blob", "text/plain"], ["samples/config.json", '{"theme":"dark"}', "application/json"]] as const) {
+      if (storage.head(storeId, p)) continue;
+      await blob.handle(new Request(`http://local/api/blob/?pathname=${encodeURIComponent(p)}`, { method: "PUT", headers: { authorization: `Bearer ${tok}`, "x-content-type": type }, body }), "/");
+    }
   }
 
   async function handle(req: Request): Promise<Response> {
